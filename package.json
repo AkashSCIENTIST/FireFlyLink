@@ -1,5 +1,5 @@
 {
-  "name": "url_redirector",
+  "name": "fireflylink",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -21,7 +21,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "firebase deploy --only hosting:fireflylink"
+    "deploy": "firebase deploy --only hosting:fireflylink",
+    "git-deploy": "git push -u origin main"
   },
   "eslintConfig": {
     "extends": [

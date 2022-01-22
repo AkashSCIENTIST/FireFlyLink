@@ -57,9 +57,9 @@ button {
 }
 
 .navbar h1 {
-  -webkit-text-fill-color: transparent;
+  /*-webkit-text-fill-color: transparent;
   background: -webkit-linear-gradient(90deg, #58cc02, #89e219);
-  -webkit-background-clip: text;
+  -webkit-background-clip: text;*/
   background-clip: text;
   color: #58cc02;
 }

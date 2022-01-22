@@ -57,21 +57,6 @@ function InputForm() {
   let query = linksRef.orderBy("createdAt", "desc");
   let [links] = useCollectionData(query, { idField: "id" });
   let shortLink = word === "" ? generateRandomStr(4) : word;
-  //console.log(links);
-
-  /*while (true) {
-    // eslint-disable-next-line no-loop-func
-    let temp = links.filter((link) => {
-      return link.shortLink.toString() === shortLink;
-    });
-
-    if (temp.length === 0) {
-      break;
-    } else {
-      const poss = "abcdefghijklmnopqrstuvwxyz0123456789";
-      shortLink += poss.charAt(Math.floor(Math.random() * poss.length));
-    }
-  }*/
 
   async function submitEvent(e) {
     while (true) {
@@ -83,7 +68,7 @@ function InputForm() {
       if (temp.length === 0) {
         break;
       } else {
-        const poss = "abcdefghijklmnopqrstuvwxyz0123456789";
+        const poss = "123456789";
         shortLink += poss.charAt(Math.floor(Math.random() * poss.length));
       }
     }
@@ -235,7 +220,7 @@ function SignOut() {
 function Navbar(props) {
   return (
     <div className='navbar'>
-      <h1>🔥Fire Fly Links</h1>
+      <h1>🔥Fire Fly Link</h1>
       <div className='links'>
         {props.curuser && <SignOut />}
         {!props.curuser && <SignIn />}
