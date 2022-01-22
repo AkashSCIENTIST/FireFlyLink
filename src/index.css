@@ -1,3 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'Feather Bold';
+  src: local('feather'), url(./feather.ttf) format('truetype');
+}
+
+*{
+  font-family: "Feather Bold";
+}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,6 +15,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-y: auto;
 }
 
 code {

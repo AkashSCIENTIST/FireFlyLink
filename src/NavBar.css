@@ -1,0 +1,35 @@
+.navbar {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto;
+  border-bottom: 1px solid #f2f2f2;
+}
+.navbar h1 {
+  color: #f1356d;
+}
+.navbar .links {
+  margin-left: auto;
+}
+.navbar button {
+  font-family: "Quicksand";
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 16px;
+  text-decoration: none;
+  padding: 6px;
+  background-color: #f1356d;
+  border-radius: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  border-radius: 20px;
+  box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+  border-width: 2px;
+}
