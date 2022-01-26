@@ -103,10 +103,6 @@ button {
   color: #58cc02;
 }
 
-.pleasesignin h2 {
-  font-size: 150%;
-}
-
 .inputform {
   padding: 0px;
   margin: 20px 50px;
@@ -132,7 +128,7 @@ button {
   text-align: left;
 }
 
-.invisible{
+.invisible {
   visibility: hidden;
 }
 
@@ -166,37 +162,38 @@ button {
   padding: 15px 32px;
 }
 
-table{
+table {
   width: 100%;
-  overflow-x:auto;
+  overflow-x: auto;
   padding-left: 30px;
   padding-right: 30px;
   padding-top: 20px;
+  border-radius: 20px;
 }
 
 th,
 td {
   text-align: left;
   padding: 10px;
-  overflow-x:auto;
+  overflow-x: auto;
 }
 
-th{
+th {
   /*color: #fafafa;
   background-color: #4b4b4b;*/
   background-color: #89e219;
   color: black;
 }
 
-tr{
-  overflow-x:auto;
+tr {
+  overflow-x: auto;
 }
 
 tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-.deletebutton{
+.deletebutton {
   padding-left: 40px;
   height: 20px;
   width: 20px;

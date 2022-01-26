@@ -4,8 +4,13 @@ import "firebase/compat/firestore";
 import "firebase/compat/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { useState } from "react";
-//import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import { useParams } from "react-router";
 import { config } from "./config";
 
@@ -23,20 +28,16 @@ function generateRandomStr(length) {
   return text;
 }
 
-/*function App(){
-  return(
+function App() {
+  return (
     <Router>
-      <Switch>
-        <Route exact path="/">
-          <MyApp />
-        </Route>
-        <Route path="/:id">
-          <Redirector />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route exact path='/' element={<MyApp />} />
+        <Route path='/:id' element={<Redirector />} />
+      </Routes>
     </Router>
   );
-}*/
+}
 
 function MyApp() {
   const [user] = useAuthState(auth);
@@ -64,7 +65,7 @@ function InputForm() {
       let temp = links.filter((link) => {
         return link.shortLink.toString() === shortLink;
       });
-  
+
       if (temp.length === 0) {
         break;
       } else {
@@ -134,7 +135,7 @@ function MyTable(props) {
               return link.user.toString() === auth.currentUser.uid.toString();
             })
             .map((link) => {
-              const { id, longLink, shortLink, user, createdAt } = link;
+              const { longLink, shortLink } = link;
 
               function deleteHandler() {
                 //console.log(link);
@@ -162,32 +163,6 @@ function MyTable(props) {
   );
 }
 
-function MyTableRow(props) {
-  const { id, longLink, shortLink, user, createdAt } = props.link;
-  //const host = useLocation();
-  const host = "";
-  const deleteHandler = () => {
-    console.log("Delete id : ", id);
-    console.log(host.pathname);
-  };
-  return (
-    <>
-      <tr key={id}>
-        <td>{user}</td>
-        <td>
-          <a href={longLink}>{longLink}</a>
-        </td>
-        <td>
-          <a href={`${host}/${shortLink}`}>{`${host}/${shortLink}`}</a>
-        </td>
-        <td>
-          <button onClick={deleteHandler}>Delete</button>
-        </td>
-      </tr>
-    </>
-  );
-}
-
 function PleaseSignIn() {
   return (
     <div className='pleasesignin'>
@@ -198,14 +173,13 @@ function PleaseSignIn() {
       <br></br>
       <br></br>
       <br></br>
-      <h1>Please Sign In to Continue</h1>
+      <h1>Please Sign In to Continue :)</h1>
     </div>
   );
 }
 
 function SignOut() {
-  const { uid, photoURL, displayName, email, emailVerified, phoneNumber } =
-    auth.currentUser;
+  const { photoURL, displayName } = auth.currentUser;
   //console.log(auth.currentUser);
   return (
     auth.currentUser && (
@@ -241,16 +215,31 @@ function SignIn() {
   );
 }
 
-function DuoButton(props) {
+/*function DuoButton(props) {
   return (
     <div className='duobutton'>
       <p>{props.children}</p>
     </div>
   );
-}
+}*/
 
-function Redirector() {
+function Redirector(props) {
   const { id } = useParams();
+  let query = linksRef.where("shortLink", "==", id);
+  const navigate = useNavigate();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    const querySnapshot = await query.limit(1).get();
+    const doc = querySnapshot.docs[0];
+    var long = doc.data().longLink.toString();
+    if (long.startsWith("https://") || long.startsWith("http://")) {
+      window.location.replace("https://" + doc.data().longLink);
+    } else {
+      window.location.replace(doc.data().longLink);
+    }
+  }, []);
+
+  return null;
 }
 
-export default MyApp;
+export default App;
