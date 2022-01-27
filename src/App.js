@@ -5,12 +5,7 @@ import "firebase/compat/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useParams } from "react-router";
 import { config } from "./config";
 
@@ -53,13 +48,19 @@ function MyApp() {
 function InputForm() {
   const [formValue, setFormValue] = useState("");
   const [word, setWord] = useState("");
-  //const [custom, setCustom] = useState(false);
   const { uid } = auth.currentUser;
   let query = linksRef.orderBy("createdAt", "desc");
   let [links] = useCollectionData(query, { idField: "id" });
   let shortLink = word === "" ? generateRandomStr(4) : word;
 
   async function submitEvent(e) {
+
+    const validRegex = /([\d\w][\d\w_-]*[\d\w])|([\w\d])/;
+    if(!validRegex.test(shortLink)){
+      alert(`Custom words (for custom short link) must conatin alphabets, numbers. It may contain hyphens and underscores in between, but not at ends.`);
+      return;
+    }
+
     while (true) {
       // eslint-disable-next-line no-loop-func
       let temp = links.filter((link) => {
@@ -135,20 +136,51 @@ function MyTable(props) {
               return link.user.toString() === auth.currentUser.uid.toString();
             })
             .map((link) => {
-              const { longLink, shortLink } = link;
+              let { longLink, shortLink } = link;
+              const site = window.location.href;
+
+              if (
+                !(
+                  longLink.startsWith("https://") ||
+                  longLink.startsWith("http://")
+                )
+              ) {
+                longLink = "https://" + longLink;
+              }
 
               function deleteHandler() {
                 //console.log(link);
                 linksRef.doc(link.id).delete();
               }
 
+              function copyHandler() {
+                const redirect = site + shortLink;
+                navigator.clipboard.writeText(redirect);
+              }
+
+              function copyHandler2() {
+                navigator.clipboard.writeText(longLink);
+              }
+
               return (
                 <tr key={link.id.toString()}>
                   {/*<td>{user}</td>*/}
                   <td>
+                    <img
+                      onClick={copyHandler2}
+                      alt='copy'
+                      src='copy.png'
+                      className='copyimage'></img>
+                    {"     "}
                     <a href={longLink}>{longLink}</a>
                   </td>
                   <td>
+                    <img
+                      onClick={copyHandler}
+                      alt='copy'
+                      src='copy.png'
+                      className='copyimage'></img>
+                    {"     "}
                     <a href={`/${shortLink}`}>{`/${shortLink}`}</a>
                   </td>
                   <td>
@@ -226,20 +258,31 @@ function SignIn() {
 function Redirector(props) {
   const { id } = useParams();
   let query = linksRef.where("shortLink", "==", id);
-  const navigate = useNavigate();
+  const [isFound, setIsFound] = useState(false);
+  //const navigate = useNavigate();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
     const querySnapshot = await query.limit(1).get();
     const doc = querySnapshot.docs[0];
     var long = doc.data().longLink.toString();
-    if (long.startsWith("https://") || long.startsWith("http://")) {
-      window.location.replace("https://" + doc.data().longLink);
+
+    if (long) {
+      setIsFound(true);
+      if (!(long.startsWith("https://") || long.startsWith("http://"))) {
+        window.location.replace("https://" + long);
+      } else {
+        window.location.replace(doc.data().longLink);
+      }
     } else {
-      window.location.replace(doc.data().longLink);
+      setIsFound(false);
     }
   }, []);
 
-  return null;
+  return isFound ? (
+    <h3>{"   "}Redirecting ...</h3>
+  ) : (
+    <h3>Error 404 : link not found</h3>
+  );
 }
 
 export default App;

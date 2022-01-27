@@ -123,6 +123,12 @@ button {
   box-shadow: inset 0px 0px 0px 0px red;
 }
 
+@media only screen and (max-width: 470px) {
+  .inputform input{
+    padding-inline-end: 10px;
+  }
+}
+
 .inputform textarea ::placeholder {
   font-size: 1rem;
   text-align: left;
@@ -164,7 +170,7 @@ button {
 
 table {
   width: 100%;
-  overflow-x: auto;
+  overflow: auto;
   padding-left: 30px;
   padding-right: 30px;
   padding-top: 20px;
@@ -197,4 +203,12 @@ tr:nth-child(even) {
   padding-left: 40px;
   height: 20px;
   width: 20px;
+}
+
+.copyimage{
+  height:20px;
+  width: 20px;
+  cursor: pointer;
+  padding-right: 5px;
+  margin-top: 4px;
 }
